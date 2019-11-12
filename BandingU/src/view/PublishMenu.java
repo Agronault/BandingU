@@ -13,18 +13,18 @@ import model.ServiceBank;
  *
  * @author aluno
  */
-public class EditMenu extends javax.swing.JFrame {
+public class PublishMenu extends javax.swing.JFrame {
 
     private final Service service;
     private ServiceBank bank;
-    private final int index;
+    private int index;
     private MainMenu parent;
     /**
      * Creates new form EditMenu
      * @param service
      * @param bank
      */
-    public EditMenu(Service service, ServiceBank bank, int i, MainMenu parent) {
+    public PublishMenu(Service service, ServiceBank bank, int i, MainMenu parent) {
         this.service = service;
         this.bank = bank;
         initComponents();

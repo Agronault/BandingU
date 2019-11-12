@@ -160,7 +160,7 @@ public class Login extends javax.swing.JFrame {
         }else{
             this.textNome.setText("Nome:");
             this.buttonEntrar.setBackground(Color.GREEN);
-            this.page = new MainMenu(this.serviceBank, aux, this.propostaBank);
+            this.page = new MainMenu(this.serviceBank, aux, this.propostaBank, this.subBank, this.bank);
             page.setLocationRelativeTo(null);
             page.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             page.setVisible(true);

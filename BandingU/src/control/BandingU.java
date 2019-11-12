@@ -40,7 +40,7 @@ public class BandingU {
             File file = new File("data");
             file.createNewFile();
             Users aux = new Users();
-            aux.insert(new Admin("admin", "root", 0));
+            aux.insert(new Admin("admin", "root", "adminastror", "adm@admin.com", "99999-9999", "area 51", true, 0));
             FileOutputStream out = new FileOutputStream("data");
             ObjectOutputStream saveData = new ObjectOutputStream(out);
             saveData.writeObject(aux);
@@ -62,7 +62,7 @@ public class BandingU {
             File file = new File("services");
             file.createNewFile();
             ServiceBank serv = new ServiceBank();
-            serv.addService(new Service("exemplo", "esse é um exemplo de pedido de ajuda", "MANO QUERO AJUDA", new Admin("admin", "root", 0)));
+            serv.addService(new Service("exemplo", "esse é um exemplo de pedido de ajuda", "MANO QUERO AJUDA", new Admin("admin", "root", "adminastror", "adm@admin.com", "99999-9999", "area 51", true, 0)));
             try (FileOutputStream servOut = new FileOutputStream("services")) {
                 ObjectOutputStream servOutStr = new ObjectOutputStream(servOut);
                 servOutStr.writeObject(serv);
@@ -96,10 +96,27 @@ public class BandingU {
         propostaBank = (PropostaBank) readData.readObject();
 
         in.close();
-
-        //FAZER STREAM SUBMISSION
-        submissionBank = new SubmissionBank();
         
+        try {
+            in = new FileInputStream("sub");
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Banco de dados corrompido, iniciando um novo...");
+            File file = new File("sub");
+            file.createNewFile();
+            SubmissionBank sub = new SubmissionBank();
+            try (FileOutputStream propOut = new FileOutputStream("sub")) {
+                ObjectOutputStream servOutStr = new ObjectOutputStream(propOut);
+                servOutStr.writeObject(sub);
+            }
+        } finally {
+            in = new FileInputStream("sub");
+            readData = new ObjectInputStream(in);
+        }
+        
+        submissionBank = (SubmissionBank) readData.readObject();
+
+        in.close();
         
         WindowListener exitListener = new WindowAdapter() {
 
@@ -123,6 +140,10 @@ public class BandingU {
                         out = new FileOutputStream("propostas");
                         saveData = new ObjectOutputStream(out);
                         saveData.writeObject(propostaBank);
+                        
+                        out = new FileOutputStream("sub");
+                        saveData = new ObjectOutputStream(out);
+                        saveData.writeObject(submissionBank);
 
                     } catch (IOException e2) {
                         System.err.print("ERROR>" + e2.getMessage());

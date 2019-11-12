@@ -24,6 +24,8 @@ public class MainMenu extends javax.swing.JFrame {
     private Service[] servicesArray;
     private User me;
     private PropostaBank propostaBank;
+    private final SubmissionBank subBank;
+    private final Users userBank;
 
     /**
      * Creates new form MainMenu
@@ -31,9 +33,11 @@ public class MainMenu extends javax.swing.JFrame {
      * @param serviceBank
      * @param me
      * @param purp
+     * @param subBank
+     * @param userBank
      */
-    public MainMenu(ServiceBank serviceBank, User me, PropostaBank purp) {
-
+    public MainMenu(ServiceBank serviceBank, User me, PropostaBank purp, SubmissionBank subBank, Users userBank) {
+        this.subBank = subBank;
         this.serviceBank = serviceBank;
         this.propostaBank = purp;
         services = getTitles();
@@ -57,8 +61,10 @@ public class MainMenu extends javax.swing.JFrame {
 
         if (me.getRank() < 2) {
             this.btEdit.setVisible(false);
-            this.jMenuPainelADM.setVisible(false);
+            this.jButtonPendentes.setVisible(false);
+            this.jButtonGerenciar.setVisible(false);
         }
+        this.userBank = userBank;
         
         
     }
@@ -97,11 +103,11 @@ public class MainMenu extends javax.swing.JFrame {
         labelDesc = new javax.swing.JLabel();
         btEdit = new javax.swing.JButton();
         btContratar = new javax.swing.JButton();
+        jButtonPendentes = new javax.swing.JButton();
         btNovoPedido = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuPainelADM = new javax.swing.JMenu();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButtonGerenciar = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -138,20 +144,31 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        jButtonPendentes.setText("Pendentes");
+        jButtonPendentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPendentesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                            .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btEdit)
-                        .addGap(56, 56, 56)
-                        .addComponent(btContratar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(labelDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(184, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btContratar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonPendentes)))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +180,8 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btEdit)
-                    .addComponent(btContratar))
+                    .addComponent(btContratar)
+                    .addComponent(jButtonPendentes))
                 .addContainerGap())
         );
 
@@ -174,21 +192,26 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        jMenuBar1.setMargin(new java.awt.Insets(0, 1, 0, 0));
+        jButton1.setText("Propostas para você");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jMenu1.setText("Fazer Pedido");
-        jMenu1.setMargin(new java.awt.Insets(0, 3, 0, 3));
-        jMenuBar1.add(jMenu1);
+        jButton2.setText("Parar procura");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jMenu2.setText("Pendentes");
-        jMenu2.setMargin(new java.awt.Insets(0, 3, 0, 3));
-        jMenuBar1.add(jMenu2);
-
-        jMenuPainelADM.setText("Painel Admin");
-        jMenuPainelADM.setMargin(new java.awt.Insets(0, 3, 0, 3));
-        jMenuBar1.add(jMenuPainelADM);
-
-        setJMenuBar(jMenuBar1);
+        jButtonGerenciar.setText("Gerenciar");
+        jButtonGerenciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGerenciarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,26 +219,44 @@ public class MainMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btNovoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonGerenciar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btNovoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButtonGerenciar))
+                        .addContainerGap(23, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btNovoPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btNovoPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(54, 54, 54))))
         );
 
         pack();
@@ -225,6 +266,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         EditMenu edit = new EditMenu(servicesArray[this.tableJobs.getSelectedIndex()], serviceBank, this.tableJobs.getSelectedIndex(), this);
         edit.setLocationRelativeTo(null);
+        edit.setDefaultCloseOperation(HIDE_ON_CLOSE);
         edit.setVisible(true);
     }//GEN-LAST:event_btEditActionPerformed
 
@@ -244,18 +286,46 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btContratarActionPerformed
 
     private void btNovoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoPedidoActionPerformed
-        
+        this.subBank.addSub(new Submission(JOptionPane.showInputDialog("O que gostaria de resolver?", ""), me));
     }//GEN-LAST:event_btNovoPedidoActionPerformed
+
+    private void jButtonPendentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPendentesActionPerformed
+        
+        PendentesMenu pendMenu = new PendentesMenu(subBank, serviceBank);
+        pendMenu.setLocationRelativeTo(null);
+        pendMenu.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButtonPendentesActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        MinhasPropostas props = new MinhasPropostas(propostaBank, serviceBank, me);
+        props.setLocationRelativeTo(null);
+        props.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        props.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(this.serviceBank.getServices().get(this.tableJobs.getSelectedIndex()).getOwner().getEmail().equals(me.getEmail())
+                || me.getRank() == 2)
+        this.serviceBank.getServices().remove(this.tableJobs.getSelectedIndex());
+        services = getTitles();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButtonGerenciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGerenciarActionPerformed
+        GerenciarUsers gerent = new GerenciarUsers(this.userBank, (Admin)this.me);
+        gerent.setLocationRelativeTo(this);
+        gerent.setVisible(true);
+    }//GEN-LAST:event_jButtonGerenciarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btContratar;
     private javax.swing.JButton btEdit;
     private javax.swing.JButton btNovoPedido;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuPainelADM;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonGerenciar;
+    private javax.swing.JButton jButtonPendentes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
